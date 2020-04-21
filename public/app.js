@@ -1,36 +1,60 @@
-// Grab the articles as a json
 $.getJSON("/articles", function (data) {
-  // For each one
-  for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    $("#articles").append(
-      "<p data-id='" +
-        data[i]._id +
-        "'>" +
-        data[i].title +
-      "<br />" +
-      data[i].link + "<br>" +
-      data[i].summary +
-        "</p>"
-    );
-  }
+    for (var i = 0; i < data.length; i++) {
+      $("#articles").append(
+        `<card data-id='${data[i]._id}'>${data[i].title}<br />${
+          data[i].link
+        }<br />${
+          data[i].summary
+        }</card><br><button class='saveArticle btn btn-primary float-right'>${"Save Article"}</button><br><br>`
+      );
+    }
 });
 
+
 var $scrapeBtn = $("#scrape");
-var API = {
-  scrapeArticles: function () {
-    return $.ajax({
-      url: "/scrape",
-      type: "GET"
-    });
- }
+
+function scrapeArticles() {
+  return $.ajax({
+    url: "/scrape",
+    type: "GET",
+  })
 }
 
-$scrapeBtn.on("click", API.scrapeArticles);
+$scrapeBtn.on("click", function () {
+  scrapeArticles();
+ $.getJSON("/articles", function (data) {
+    for (var i = 0; i < data.length; i++) {
+      $("#articles").append(
+        `<card data-id='${data[i]._id}'>${data[i].title}<br />${
+          data[i].link
+        }<br />${
+          data[i].summary
+        }</card><br><button class='saveArticle btn btn-primary float-right'>${"Save Article"}</button><br><br>`
+      );
+    }
+});
+});
+
+$("#clear").on("click", function () {
+  $("#articles").empty();
+})
+
+
+function saveArticles() {
+  return $.ajax({
+    url: "/savedArticles",
+    type: "POST",
+  })
+}
+
+$("#save").on("click", function () {
+  saveArticles();
+})
+
 
 
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function () {
+$(document).on("click", "card", function () {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
