@@ -36,10 +36,10 @@ app.set("view engine", "handlebars");
 var MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines7";
 
-mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+mongoose.connect(MONGODB_URI); //{
+    //useNewUrlParser: true,
+    //useUnifiedTopology: true
+//});
 
 
 // Routes
