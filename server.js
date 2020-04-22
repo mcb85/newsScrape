@@ -36,10 +36,10 @@ app.set("view engine", "handlebars");
 var MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines7";
 
-mongoose.connect(MONGODB_URI); //{
-    //useNewUrlParser: true,
-    //useUnifiedTopology: true
-//});
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 
 // Routes
@@ -131,7 +131,8 @@ app.post("/articles/:id", function (req, res) {
 });
 
 
-app.post("/savedArticles", function (req, res) {
+app.post("/savedArticles/:id", function (req, res) {
+  console.log("saving article" + req.params.id);
     db.Article.findOne({ _id: req.params.id })
       .then(function (dbArticle) {
         res.json(dbArticle);
