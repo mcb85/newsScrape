@@ -11,17 +11,12 @@ var db = require("./models");
 
 var PORT = process.env.PORT || 3000;
 
-// Initialize Express
+
 var app = express();
 
-// Configure middleware
-
-// Use morgan logger for logging requests
 app.use(logger("dev"));
-// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
 app.use(express.static("public"));
 
 
@@ -34,7 +29,7 @@ app.engine(
 app.set("view engine", "handlebars");
 
 var MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines7";
+  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines9";
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -59,30 +54,26 @@ app.get("/savedArticles", function (req, res) {
            
             var $ = cheerio.load(response.data);
 
-            // Now, we grab every h2 within an article tag and do the following:
-            $("h2").each(function (i, element) {
-                // Save an empty result object
+            $("div.width-100.flex-container-column.flex.river").each(function (i, element) {
+                
                 var result = {};
-
-                // Add the text and href of every link, and save them as properties of the result object
-                result.title = $(this).children("a").text();
-                result.link = "https://www.orlandosentinel.com" + $(this).children("a").attr("href");
-                result.summary = $(this).next("p").text();
+              console.log($(this));
+              result.title = $(this).find("a.no-u").text();
+              let linkName = "https://www.orlandosentinel.com" + $(this).find("a.no-u").attr("href");
+              result.link = "<a class=\"text-white target=\"blank\" href=\"https://www.orlandosentinel.com" +
+                $(this).find("a.no-u").attr("href") + "\"" + ">" + linkName + "</a>";
+              result.summary = $(this).find("p.preview-text").text();
                 
         
-                // Create a new Article using the `result` object built from scraping
                 db.Article.create(result)
                     .then(function (dbArticle) {
-                        // View the added result in the console
                         console.log(dbArticle);
                     })
                     .catch(function (err) {
-                        // If an error occurred, log it
                         console.log(err);
                     });
             });
 
-            // Send a message to the client
             res.send("Scrape Complete");
         });
     });
@@ -93,7 +84,6 @@ app.get("/articles", function (req, res) {
       res.json(dbArticle);
     })
     .catch(function (err) {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
@@ -138,7 +128,6 @@ app.post("/savedArticles/:id", function (req, res) {
         res.json(dbArticle);
       })
       .catch(function (err) {
-        // If an error occurred, send it to the client
         res.json(err);
       });
 })
