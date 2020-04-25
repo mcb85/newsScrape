@@ -29,7 +29,7 @@ app.engine(
 app.set("view engine", "handlebars");
 
 var MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines9";
+  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines8";
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -103,6 +103,19 @@ app.get("/articles/:id", function (req, res) {
 });
 
 
+app.get("/articles/:id", function (req, res) {
+  db.Article.findOne({ _id: req.params.id })
+
+    .populate("savedArticle")
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      res.json(err);
+    });
+});
+
+
 app.post("/articles/:id", function (req, res) {
   db.Note.create(req.body)
     .then(function (dbNote) {
@@ -131,6 +144,25 @@ app.post("/savedArticles/:id", function (req, res) {
         res.json(err);
       });
 })
+
+app.delete("/articles/:id"), function (req, res) {
+  console.log("deleting note");
+  db.Note.remove(req.params.id)
+    .then(function (dbNote) {
+      return db.Article.findOneAndUpdate(
+        { _id: req.params.id },
+        { note: dbNote._id },
+        { new: true }
+      );
+    })
+    .then(function (dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      res.json(err);
+    });
+};
+
 
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");

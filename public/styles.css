@@ -1,47 +1,70 @@
-body { background-color: lavender }
-      #wrapper {
-        width: 960px;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 5%;
-      }
-      #articles {
-        display: inline-block;
-        /*overflow: auto;*/
-        width: 80%;
-        height: 700px;
-      }
-      #notes {
-        float: right;
-        width: 20%;
-      }
-      textarea, input {
-        display: block;
-        width: 100%;
-        background-color: #FCF5C7;
-      }
-      input {
-        height: 36px;
-        font-size: 24px;
-      }
-      textarea {
-        height: 200px;
-        font-size: 18px;
-      }
+body {
+  background-color: lavender;
+}
+#wrapper {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5%;
+}
+#articles {
+  display: inline-block;
+  /*overflow: auto;*/
+  width: 80%;
+  height: 700px;
+}
+#notes {
+  float: right;
+  width: 20%;
+}
+textarea,
+input {
+  display: block;
+  width: 100%;
+  background-color: lavender;
+}
+input {
+  height: 36px;
+  font-size: 24px;
+}
+textarea {
+  height: 200px;
+  font-size: 18px;
+}
 
-      #article {
-        border: solid 5px white;
-        background: blue;
-        background: cover;
-        color: white;
-        width: 90%;
-        display: block;
-        margin: 20px;
-        padding:10px;
-      }
+#article {
+  border: solid 5px white;
+  background: blue;
+  background: cover;
+  color: white;
+  width: 100%;
+  display: block;
+  margin: 20px;
+  padding: 10px;
+}
 
-      #save {
-        background: green;
-      }
+.modal-title {
+  background: blue;
+  color: white;
+}
 
-   
+.modal {
+  background: lavender;
+  border-radius: 5px;
+  border: blue 1px solid;
+  /*display: inline-block;*/
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+}
+.modal-dialog {
+  /*display: inline-block;*/
+  text-align: left;
+  vertical-align: middle;
+}
+
+#closeModal {
+  padding-bottom: 1px;
+  padding-top: 1px;
+  margin-top: 0;
+}
